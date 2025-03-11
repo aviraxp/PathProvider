@@ -20,26 +20,16 @@ android {
             abiFilters.addAll(abiList)
         }
         externalNativeBuild {
-            /*
-            ndkBuild {
-                arguments("MODULE_NAME=$moduleId")
-            }
-            */
             cmake {
                 cppFlags("-std=c++20")
                 arguments(
-                    "-DANDROID_STL=none",
+                    "-DANDROID_STL=c++_static",
                     "-DMODULE_NAME=$moduleId"
                 )
             }
         }
     }
     externalNativeBuild {
-        /*
-        ndkBuild {
-            path("src/main/cpp/Android.mk")
-        }
-        */
         cmake {
             path("src/main/cpp/CMakeLists.txt")
         }
@@ -71,7 +61,7 @@ androidComponents.onVariants { variant ->
             into(moduleDir)
             from(rootProject.layout.projectDirectory.file("README.md"))
             from(layout.projectDirectory.file("template")) {
-                exclude("module.prop", "customize.sh", "post-fs-data.sh", "service.sh")
+                exclude("module.prop", "customize.sh")
                 filter<FixCrLfFilter>("eol" to FixCrLfFilter.CrLf.newInstance("lf"))
             }
             from(layout.projectDirectory.file("template")) {
@@ -84,7 +74,7 @@ androidComponents.onVariants { variant ->
                 )
             }
             from(layout.projectDirectory.file("template")) {
-                include("customize.sh", "post-fs-data.sh", "service.sh")
+                include("customize.sh")
                 val tokens = mapOf(
                     "DEBUG" to if (buildTypeLowered == "debug") "true" else "false",
                     "SONAME" to moduleId,

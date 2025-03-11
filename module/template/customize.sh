@@ -51,13 +51,9 @@ fi
 . "$TMPDIR/verify.sh"
 extract "$ZIPFILE" 'customize.sh'  "$TMPDIR/.vunzip"
 extract "$ZIPFILE" 'verify.sh'     "$TMPDIR/.vunzip"
-extract "$ZIPFILE" 'sepolicy.rule' "$TMPDIR"
 
 ui_print "- Extracting module files"
 extract "$ZIPFILE" 'module.prop'     "$MODPATH"
-extract "$ZIPFILE" 'post-fs-data.sh' "$MODPATH"
-extract "$ZIPFILE" 'service.sh'      "$MODPATH"
-mv "$TMPDIR/sepolicy.rule" "$MODPATH"
 
 HAS32BIT=false && [ $(getprop ro.product.cpu.abilist32) ] && HAS32BIT=true
 
